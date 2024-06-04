@@ -12,12 +12,19 @@ import { redirect } from "next/navigation";
 
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
+  const unitsData = getUnits();
+  const courseProgressData = getCourseProgress();
+  const lessonPercentageData = getLessonPercentage();
 
-  const [userProgress] = await Promise.all([
-    userProgressData
-  ])
-  
-  if (!userProgress || !userProgress.activeCourse) {
+  const [userProgress, units, courseProgress, lessonPercentage] =
+    await Promise.all([
+      userProgressData,
+      unitsData,
+      courseProgressData,
+      lessonPercentageData,
+    ]);
+
+  if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect("/courses");
   }
 
@@ -28,17 +35,19 @@ const LearnPage = async () => {
           activeCourse={userProgress.activeCourse}
           hearts={userProgress.hearts}
           points={userProgress.points}
-          hasActiveSubscription={false}
+          subscription={false}
         />
       </StickyWrapper>
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title} />
-        <div className="mb-10">
-          Test
-        </div>
+        {units.map((unit) => (
+          <div key={unit.id} className="mb-10">
+            {JSON.stringify(unit)}
+          </div>
+        ))}
       </FeedWrapper>
     </div>
   );
-}
+};
 
 export default LearnPage;
