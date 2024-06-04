@@ -8,7 +8,9 @@ const LearnPage = () => {
         My Sticky Sidebar
       </StickyWrapper>
       <FeedWrapper>
-        My Feed
+        <div className="">
+
+        </div>
       </FeedWrapper>
     </div>
   )
